@@ -1,34 +1,15 @@
-import BoasVindas from "./components/BoasVindas";
-import Contador from "./components/Contador";
-import ExibeNota from "./components/ExibeNota"
+import { Avatar, Button } from "@mui/material";
 
-
-function App(props) {
-
-
-  let nota = props.nota;
-  let aprovado = false;
-  let reprovado = false;
-
-  if( nota>5 ) {
-    aprovado = true;
-  } else {
-    reprovado = true;
-  }
+function App() {
 
   return (
     <>
-    { aprovado && 
-      <ExibeNota mensagem="Aprovado" nota={props.nota}/>
-    }
-    { reprovado && 
-      <ExibeNota mensagem="Reprovado" nota={props.nota}/>
-    }
-    <Contador/>
-    <BoasVindas/>
-    
+      <h1>Home</h1>
+      <Button variant="contained">Contained</Button>
+      <Button variant="outlined">Vazio</Button>
+      <Avatar  alt="Pedro" src="/static/images/avatar/2.jpg"/>
     </>
-  )
+  );
 }
 
 export default App;
