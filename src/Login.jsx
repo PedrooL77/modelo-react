@@ -1,34 +1,8 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import React from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import { useNavigate, json } from 'react-router-dom';
 
-const theme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-          main: '#02020c',
-          contrastText: '#c5bce8',
-        },
-        secondary: {
-          main: '#091bc1',
-          light: '#2929e0',
-          
-        },
-        background: {
-          default: '#d4d0d0',
-          paper: '#fbf7f7',
-        },
-        error: {
-          main: '#af0a28',
-        },
-        text: {
-            primary: '#02020c',
-            secondary: '#9196d2',
-          },
-      },
-});
 
 function Login() {
 
@@ -37,9 +11,9 @@ function Login() {
     const[ lembrar, setLembrar ] = useState( false );
     const[ login, setLogin ] = useState( false );
     const[ erro, setErro ] = useState( false );
-    
     const navigate = useNavigate();
 
+    /*Se o login for correto o efeito colateral é de limpar os campos e enviar o usuário para outra página*/
     useEffect( () => {
 
         if(login){
@@ -55,7 +29,7 @@ function Login() {
 function Autenticar( evento ) 
 {
     evento.preventDefault();
-    fetch( "https://api.escuelajs.co/api/v1/auth/login", {
+    fetch( "http://10.139.75.32:8080/login", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -63,16 +37,17 @@ function Autenticar( evento )
         body: JSON.stringify(
             {
                 email: email,
-                password: senha
+                senha: senha
             }
         )
     } )
+    /* Se a requisição acima der certo então(then), transforma a resposta em json e a partir do json o código verifica se(if) o login foi efetuado ou não*/
     .then( (resposta) => resposta.json())
     .then( ( json ) => { 
-        if( json.statusCode === 401 ){
-            setErro(true);
-        } else{
+        if( json.film ){
             setLogin(true);
+        } else{
+            setErro(true);
         }
     } ) 
     .catch( ( erro ) => { setErro(true)} )
@@ -80,10 +55,11 @@ function Autenticar( evento )
 }
 
     return (
-        <ThemeProvider theme={theme}>
+        
         <Container component="section" maxWidth="xs">
             <Box sx={{ mt: 10, backgroundColor: "#C2C2C2", padding: "50px", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center"}} >
                 <Typography component="h1" variant='h5'>Entrar</Typography>
+                { erro && ( <Alert severity="warning">Revise seus dados e tente novamente!</Alert>) }
                 <Box component="form" onSubmit={Autenticar}>
                     <TextField 
                     label="Email" 
@@ -93,6 +69,7 @@ function Autenticar( evento )
                     value={email}
                     onChange={ (e) => setEmail( e.target.value )}
                     fullWidth
+                    {...erro && ("erro") } 
                     />
                     <TextField 
                     label="Senha" 
@@ -119,7 +96,6 @@ function Autenticar( evento )
                 </Box>
             </Box>
         </Container>
-        </ThemeProvider>
     );
 }
 
