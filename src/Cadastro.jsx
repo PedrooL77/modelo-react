@@ -15,7 +15,7 @@ function Cadastro() {
     function Cadastrar(evento) {
 
         evento.preventDefault()
-        fetch( "http://10.139.75.32:8080/users", {
+        fetch( process.env.REACT_APP_BACKEND + "cadastro", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'

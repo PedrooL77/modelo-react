@@ -18,7 +18,7 @@ function Filmes() {
     function Enviar(evento) {
 
         evento.preventDefault()
-        fetch( "http://10.139.75.32:8080/filmes", {
+        fetch( process.env.REACT_APP_BACKEND + "filmes", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ function Filmes() {
     } )
     .then( (resposta) => resposta.json())
     .then( ( json ) => { 
-        if( json ){
+        if( json._id ){
             setEnviar( true );
             setErro( false )
         } else {
